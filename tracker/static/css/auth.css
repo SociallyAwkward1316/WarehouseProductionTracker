@@ -1,0 +1,113 @@
+/* === General Page Setup === */
+body {
+    margin: 0;
+    font-family: "Segoe UI", Roboto, sans-serif;
+    background-color: #f2f5f7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* === Header === */
+header {
+    width: 100%;
+    background-color: #0071ce;
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+/* === Auth Container === */
+.auth-container {
+    background: white;
+    margin-top: 80px;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 380px;
+}
+
+/* === Form === */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+input:focus {
+    border-color: #0071ce;
+}
+
+input[type="submit"] {
+    margin-top: 20px;
+    background-color: #0071ce;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+input[type="submit"]:hover {
+    background-color: #005fa3;
+}
+
+/* === Messages === */
+.messages {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+}
+
+.messages li {
+    background: #ffe8e8;
+    color: #b30000;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+/* === Links === */
+a {
+    color: #0071ce;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* === Small Section (Switch to Login/Register) === */
+.switch-section {
+    margin-top: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.switch-section p {
+    margin: 0 0 8px 0;
+}

@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Register</title>
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+</head>
+<body>
+    <header>ProdTrack Login</header>
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if page == 'login' %}
+    <div class="auth-container">
+        <form method="POST" action="">
+            {% csrf_token %}
+            <label>Username:</label>
+            <input type="text" name="username" placeholder="Enter Username" />
+
+            <label>Password:</label>
+            <input type="password" name="password" placeholder="Enter Password" />
+
+            <input type="submit" value="Login" />
+        </form>
+
+        <div class="switch-section">
+            <p>Don't have an account?</p>
+            <a href="{% url 'register' %}">Register here</a>
+        </div>
+    </div>
+
+    {% else %}
+    <div class="auth-container">
+        <h2>Register Account</h2>
+        <form method="POST" action="">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Register" />
+        </form>
+
+        <div class="switch-section">
+            <p>Already have an account?</p>
+            <a href="{% url 'login' %}">Login</a>
+        </div>
+    </div>
+    {% endif %}
+</body>
+</html>

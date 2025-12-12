@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | ProdTrack</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+
+    <!-- HEADER -->
+   <div class="top-bar">
+    <a href="{% url 'logout' %}" class="logout">Logout</a>
+    <h1 class="title">Prod Track!</h1>
+    <span class="welcome">Welcome, {{ user.username }}</span>
+    </div>
+
+
+
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+        <!-- WELCOME CARD -->
+        <section class="card welcome-card">
+            <h3>Welcome, {{ request.user.username|title }}</h3>
+            <p>Shift: <strong>{{ profile.shift_type }}</strong> | Job: <strong>{{ profile.job }}</strong></p>
+        </section>
+
+    <!-- Chart -->
+    <div>
+        {{ chart|safe }}
+    </div>
+
+        <!-- START SHIFT CARD -->
+        <section class="card form-card">
+            <h3>Start a New Shift</h3>
+            <form method="POST" action="">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn primary">Start Shift</button>
+            </form>
+        </section>
+
+        <!-- ACTIVE/PAST SHIFTS -->
+        <section class="card shift-card">
+            <h3>Your Shifts</h3>
+            {% for shift in user_shifts %}
+                <div class="shift-item">
+                    <p>
+                        <a href="{% url 'shift' shift.id %}" class="shift-link">
+                            Shift #{{ shift.shift_number }}
+                        </a> | 
+                        Duty: <strong>{{ shift.duty }}</strong> |
+                        Production: <strong>{{ shift.Production_Percentage }}%</strong> |
+                        Status: 
+                        {% if shift.end_time %}
+                            <span class="status completed">Completed</span>
+                        {% else %}
+                            <span class="status ongoing">Ongoing</span>
+                        {% endif %}
+                    </p>
+                </div>
+            {% empty %}
+                <p>No shifts yet.</p>
+            {% endfor %}
+        </section>
+
+    </main>
+
+</body>
+</html>
