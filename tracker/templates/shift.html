@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shift {{ shift.id }}</title>
+    <link rel="stylesheet" href="{% static 'css/shift.css' %}">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+    <div class="header-top">
+        <a href="{% url 'home' %}" class="home-link">← Home</a>
+    </div>
+    <div class="header-title">
+        <h1>Shift #{{ shift_number }}</h1>
+    </div>
+</header>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        <section class="card">
+            <h2>Shift Overview</h2>
+            <p><strong>Regular Moves:</strong> {{ shift.regular_move }}</p>
+            <p><strong>Long Moves:</strong> {{ shift.long_move }}</p>
+            <p><strong>Pallet Returns:</strong> {{ shift.pallet_return }}</p>
+            <p><strong>Downtime Minutes:</strong> {{ shift.downtime_minutes }}</p>
+            <hr>
+            <p><strong>Total Moves:</strong> {{ shift.total_moves }}</p>
+            <p><strong>Hours Worked:</strong> {{ hours_worked }}</p>
+            <p><strong>Production:</strong> {{ production_rate }}%</p>
+        </section>
+
+        <!-- MOVE FORM -->
+        {% if not shift.end_time %}
+        <section class="card">
+            <h2>Add Move</h2>
+            <form method="POST" action="">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn-primary">Add Move</button>
+            </form>
+        </section>
+
+        <!-- DOWNTIME FORM -->
+        <section class="card">
+            <h2>Log Downtime</h2>
+            <form method="POST" action="{% url 'add_downtime' shift.pk %}">
+                {% csrf_token %}
+                {{ downtime_form.as_p }}
+                <button type="submit" class="btn-secondary">Add Downtime</button>
+            </form>
+        </section>
+
+        <!-- END SHIFT -->
+        <section class="card end-shift">
+            <form method="POST" action="{% url 'end_shift' shift.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-danger">End Shift</button>
+            </form>
+        </section>
+        {% endif %}
+
+        <!-- DOWNTIME HISTORY -->
+        <section class="card">
+            <h2>Downtime Log</h2>
+            {% if shift_downtime %}
+                {% for downtime in shift_downtime %}
+                    <p><b>Reason:</b> {{ downtime.reason }} <b>| Duration:</b> {{ downtime.duration }} min</p>
+                {% endfor %}
+            {% else %}
+                <p>No downtime recorded yet.</p>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>
