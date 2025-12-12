@@ -95,7 +95,7 @@ class Shift(models.Model):
 class Downtime(models.Model):
     shift = models.ForeignKey(Shift, on_delete=models.CASCADE, related_name='downtimes')
     reason = models.CharField(max_length=255)
-    duration = models.IntegerField(max_length=10, default=0)
+    duration = models.IntegerField(default=0)
     
    
     
