@@ -65,9 +65,7 @@ It demonstrates:
 
 ## Future Improvements
 
-- Role-based permissions (team leads / admins)
 - Exportable production reports
-- REST API layer for external integrations
 - Mobile-first UI enhancements
 
 ## Author
