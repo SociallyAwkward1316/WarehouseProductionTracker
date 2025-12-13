@@ -103,49 +103,57 @@ def Home_Page(request):
     user = request.user
     user_shifts = Shift.objects.filter(user=user).order_by('id')
 
-    # basic data
-    x = [f"Shift {i+1}" for i in range(len(user_shifts))]
-    y = [shift.Production_Percentage() for shift in user_shifts]
+    chart = "<p>No production data yet.</p>"
 
+    if user_shifts.exists():
+        x = [f"Shift {i+1}" for i in range(len(user_shifts))]
+        y = [shift.Production_Percentage() for shift in user_shifts]
 
-    # simple line chart
-    fig = px.line(x=x, y=y, title="Production Over Time", markers=True)
-    fig.update_layout(yaxis_title="Production %", xaxis_title="Shift")
-    fig.update_traces(hovertemplate='Shift: %{x}<br>Production: %{y}%<extra></extra>')
+        fig = px.line(
+            x=x,
+            y=y,
+            title="Production Over Time",
+            markers=True
+        )
+        fig.update_layout(
+            yaxis_title="Production %",
+            xaxis_title="Shift"
+        )
+        fig.update_traces(
+            hovertemplate='Shift: %{x}<br>Production: %{y}%<extra></extra>'
+        )
 
-    chart = plot(fig, output_type='div')
-    if not user_shifts.exists():
-        chart = "<p>No production data yet.</p>"
+        chart = plot(fig, output_type='div')
 
-    # Assign each shift a number specific to this user
+    # Assign shift numbers
     for index, shift in enumerate(user_shifts, start=1):
         shift.shift_number = index
 
-
     user_shifts = reversed(list(user_shifts))
 
+    form = ShiftForm()
+
     try:
-        form = ShiftForm()
-        user_profile = UserProfile.objects.get(user=request.user)
-        context = {
-            "profile": user_profile,
-            "form": form,
-            "user_shifts": user_shifts,
-            "chart": chart,
-        }
+        user_profile = UserProfile.objects.get(user=user)
     except ObjectDoesNotExist:
-        context = {}
+        user_profile = None
 
     if request.method == "POST":
         form = ShiftForm(request.POST)
         if form.is_valid():
             duty = form.cleaned_data['duty']
-            user = request.user
-
             shift = Shift.objects.create(duty=duty, user=user)
             return redirect('shift', pk=shift.id)
 
+    context = {
+        "profile": user_profile,
+        "form": form,
+        "user_shifts": user_shifts,
+        "chart": chart,
+    }
+
     return render(request, 'home_page.html', context)
+
 
 
 
